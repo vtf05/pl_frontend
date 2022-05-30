@@ -1,0 +1,74 @@
+ .header {
+     background-color: white !important;
+     width: 100% !important;
+     position: fixed !important;
+     list-style-type: none;
+     overflow: hidden;
+     padding: 5px;
+     padding-left: 0px;
+     margin-bottom: 0px;
+     margin-top: 0px;
+     padding-top: 5px;
+     padding-bottom: 0px;
+     box-shadow: 0px 0px 0px 0px !important;
+     z-index: 1;
+ }
+ 
+ .header-Icon {
+     color: black;
+ }
+ 
+ #long-button {
+     display: none;
+ }
+ 
+ .util-icon {
+     float: right;
+     margin-left: auto;
+ }
+ 
+ .menu-buttons {
+     color: black !important;
+ }
+ 
+ @media only screen and (max-width: 590px) {
+     .header {
+         font-size: "14px" !important;
+         width: 100% !important;
+         margin: 0 auto;
+         margin-right: 0px;
+         position: fixed;
+         list-style-type: none;
+         margin: 0;
+         padding: 0;
+         overflow: hidden;
+         padding: 5px;
+         padding-left: 0px;
+         margin-bottom: 0px;
+         margin-top: 0px;
+         padding-top: 5px;
+         padding-bottom: 0px;
+         box-shadow: 0px;
+     }
+     .header-login {
+         font-size: 12px !important;
+         display: none !important;
+     }
+     .header-logout {
+         font-size: 12px !important;
+         display: none !important;
+     }
+     .header-Icon {
+         color: black;
+         margin-left: auto;
+     }
+     .util-icon {
+         float: right;
+         margin-left: auto;
+     }
+     #long-button {
+         margin-left: 5px !important;
+         color: white !important;
+         display: block
+     }
+ }

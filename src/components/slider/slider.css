@@ -1,0 +1,35 @@
+.container {
+    width: 90%;
+    margin: 0 auto;
+    list-style: none;
+    padding: 0;
+}
+
+.slide>div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.slide span {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    color: white;
+    background: rgba(141, 174, 224, 0.5);
+    text-align: center;
+}
+
+.react-slideshow-container {
+    height: 250px;
+    padding-top: 20px;
+    border-radius: 20px;
+}
+
+.react-slideshow-container .default-nav {
+    display: none;
+    justify-content: center;
+}
