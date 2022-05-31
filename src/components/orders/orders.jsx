@@ -74,9 +74,9 @@ function OrderList(props) {
  };
  const navigate = useNavigate() ;
 
- const handleNavigate =(price) => {
+ const handleNavigate =(price,orderid) => {
     // console.log("order_price", price);
-    navigate("/order_payment", { state: {order_price : price}});
+    navigate("/order_payment", { state: {order_price : price,cart_id : orderid}});
  }
 
  const open = Boolean(anchorEl);
@@ -157,7 +157,7 @@ function OrderList(props) {
                   </Grid>
                 ))}
                 <CardActions>
-                  <Button fullWidth onClick={()=>{handleNavigate(order.price)}}>Proceed to pay</Button>
+                  <Button fullWidth onClick={()=>{handleNavigate(order.price, order?.id);}}>Proceed to pay</Button>
                 </CardActions>
               </Popover>
             </>

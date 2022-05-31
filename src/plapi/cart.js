@@ -43,13 +43,27 @@ export default class Cart extends Abstract {
 
     async add_item(cart_id, item_id) {
         const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
-        const res = await fetch(`${this.endpoint}add_item/?cart_id=${cart_id}&item_id=${item_id}`, {
+        const res = await fetch(
+            `${this.endpoint}add_item/?cart_id=${cart_id}&item_id=${item_id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Token ${accessToken}`,
+                },
+                method: "POST",
+                body: "",
+            }
+        );
+        return this._handleError(res);
+    }
+    async update(cartId, obj) {
+        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const res = await fetch(`${this.endpoint}${cartId}/`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Token ${accessToken}`,
             },
-            method: "POST",
-            body: "",
+            method: "PATCH",
+            body: JSON.stringify(obj),
         });
         return this._handleError(res);
     }

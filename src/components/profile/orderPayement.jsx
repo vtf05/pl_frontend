@@ -53,6 +53,7 @@ class OrderPay extends Component {
       order_price: 0,
       checked: false,
       name: "",
+      cart_id : '',
     };
     this.loadData = this.loadData.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -81,7 +82,6 @@ class OrderPay extends Component {
                   id="standard-size-normal"
                   label="your name"
                   variant="standard"
-                  fullwidth
                   onChange={this.handleNameChange}
                 />
               </Grid>
@@ -135,6 +135,7 @@ class OrderPay extends Component {
     this.setState({
       wallet_bal: wb,
       order_price: this.props.order_price,
+      cart_id : this.props.cart_id,
     });
   }
 
@@ -179,7 +180,7 @@ class OrderPay extends Component {
       handler: function (response) {
         // we will handle success by calling handlePaymentSuccess method and
         // will pass the response that we've got from razorpay
-        Plapi.Wallet.handlePaymentSuccess(response);
+         Plapi.Wallet.handlePaymentSuccess(response);
       },
       prefill: {
         name: "User's name",
@@ -196,12 +197,21 @@ class OrderPay extends Component {
 
     var rzp1 = new window.Razorpay(options);
     rzp1.open();
+    this.handleSuccess();
     //  after the successfull payment we need to redirect to the wallet page
+  }
+  async handleSuccess(){
+      const {cart_id} = this.state ;
+      const obj = { paid: true, proccessed :true};
+      const res = await Plapi.Cart.update(cart_id,obj);
+      if (!res.error){
+          console.log("success")
+      }
   }
 }
 
 export default function Orderpay(props){
   const location = useLocation();
-  const {order_price} = location.state
-  return <OrderPay order_price={order_price} {...props}/>;
+  const {order_price , cart_id} = location.state ;
+  return <OrderPay order_price={order_price}  cart_id ={cart_id} {...props}/>;
 };
