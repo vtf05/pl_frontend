@@ -190,7 +190,7 @@ class OrderPay extends Component {
         address: "Razorpay Corporate Office",
       },
       theme: {
-        color: "#3399cc",
+        color: "#000000",
       },
     };
 

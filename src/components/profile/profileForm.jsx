@@ -156,7 +156,6 @@ export default class ProfileForm extends Component {
     this.setState({
       [name]: e.target.value,
     });
-    console.log(this.state);
   };
 
   async updateData(){

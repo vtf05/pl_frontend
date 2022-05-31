@@ -42,9 +42,10 @@ export function Item(props) {
   };
 
   const handleCallback = (cart_id) => {
-    console.log(ItemObj)
+    // console.log(ItemObj)
     const item_id = ItemObj.id;
     handleAddItem(cart_id, item_id);
+    setOpen(false) ;
   };
 
 
@@ -112,7 +113,7 @@ export function Item(props) {
                     placement="bottom-start"
                     sx={{ borderRadius: "20px" }}
                   >
-                    <Card>
+                    <Card className="main-card">
                       <CardActions
                         sx={{ justifyContent: "right", padding: "0" }}
                       >
@@ -126,21 +127,20 @@ export function Item(props) {
                         </IconButton>
                       </CardActions>
                       <CartList parentCallback={handleCallback}></CartList>
-                      <CardActions
-                        sx={{ justifyContent: "right", padding: "0" }}
                    
-                      >
                         <Button
                           id="new-cart"
                           sx={{
-                            fontSize: "0.7125rem",
+                            fontSize: "0.80rem",
                             color: "#000000",
                           }}
-                          onClick={()=>{handleCallback(null)}}
+                          onClick={() => {
+                            handleCallback(null);
+                          }}
                         >
                           ADD to New Cart
                         </Button>
-                      </CardActions>
+      
                     </Card>
                   </Popper>
                 </>
@@ -178,7 +178,7 @@ class CartList extends React.Component {
   render() {
     const {carts} = this.state ;
     return (
-      <Paper style={{ maxHeight: 200, overflow: "auto" }}>
+      <Paper style={{ maxHeight: 200, overflow: "auto" }} >
         <List>
           {carts.map((cart) => {
             const labelId = `checkbox-list-secondary-label-${cart?.id}`;
@@ -186,7 +186,12 @@ class CartList extends React.Component {
             return (
               <>
                 <ListItem key={cart?.id} disablePadding className="cart-item">
-                  <ListItemButton onClick={()=>{this.handleClick(cart_id);}} value={cart?.id}>
+                  <ListItemButton
+                    onClick={() => {
+                      this.handleClick(cart_id);
+                    }}
+                    value={cart?.id}
+                  >
                     <IconButton aria-label="cart" sx={{ marginRight: 1 }}>
                       <StyledBadge
                         badgeContent={(cart?.items).length}
@@ -195,7 +200,6 @@ class CartList extends React.Component {
                         <ShoppingCartIcon className="header-Icon" />
                       </StyledBadge>
                     </IconButton>
-                    <ListItemText primary={cart?.id}></ListItemText>
                     <ListItemText primary={cart?.price}></ListItemText>
                   </ListItemButton>
                 </ListItem>
