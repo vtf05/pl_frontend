@@ -4,9 +4,6 @@ import {
   Avatar,
   Box,
   Button,
-  Card,
-  CardActionArea,
-  CardActions,
   CardContent,
   Container,
   Divider,
@@ -72,12 +69,12 @@ function OrderList(props) {
  const handleClose = () => {
    setAnchorEl(null);
  };
- const navigate = useNavigate() ;
+//  const navigate = useNavigate() ;
 
- const handleNavigate =(price,orderid) => {
-    // console.log("order_price", price);
-    navigate("/order_payment", { state: {order_price : price,cart_id : orderid}});
- }
+//  const handleNavigate =(price,orderid) => {
+//     // console.log("order_price", price);
+//     navigate("/order_payment", { state: {order_price : price,cart_id : orderid}});
+//  }
 
  const open = Boolean(anchorEl);
  const id = open ? "simple-popover" : undefined;
@@ -156,9 +153,7 @@ function OrderList(props) {
                     <Item ItemObj={item} order={props.active}></Item>
                   </Grid>
                 ))}
-                <CardActions>
-                  <Button fullWidth onClick={()=>{handleNavigate(order.price, order?.id);}}>Proceed to pay</Button>
-                </CardActions>
+               
               </Popover>
             </>
           ))}

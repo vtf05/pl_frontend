@@ -1,0 +1,6 @@
+.order-pay {
+    position: fixed;
+    bottom: 2px;
+    z-index: 1;
+    width: 90%
+}

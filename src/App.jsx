@@ -8,6 +8,7 @@ import {
 
 // Import components
 import Header from "./components/header/header";
+import CartL from "./components/cart/cart";
 import HomeView from "./components/homeView"
 import LoginView from  "./components/login/loginView"
 import Profile from "./components/profile/profile"
@@ -46,6 +47,7 @@ class App extends Component {
             <Route exact path="/order_payment" element={<OrderPay />} />
             <Route exact path="/items" element={<ItemList />} />
             <Route exact path="/orders" element={<Order />} />
+            <Route exact path="/cart" element={<CartL />} />
           </Routes>
         </Router>
       </div>

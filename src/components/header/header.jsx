@@ -116,7 +116,7 @@ class Header extends Component {
             </Menu>
             <div className="util-icon">
               <Tooltip title="Cart">
-                <IconButton aria-label="create" size="3x" href="/orders">
+                <IconButton aria-label="create" size="3x" href="/cart">
                   <ShoppingCartIcon color="inherit" className="header-Icon" />
                 </IconButton>
               </Tooltip>

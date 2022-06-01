@@ -1,23 +1,14 @@
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import Popper from "@mui/material/Popper";
-import Paper from "@mui/material/Paper";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Snackbar from "@mui/material/Snackbar";
 
 // images
 import image from "../../assets/paella.jpg";
@@ -26,35 +17,65 @@ import "./item.css";
 // icons
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Avatar, CardActions, Container, Divider } from "@mui/material";
-import Plapi from "../../plapi";
 import { Close } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
+
+import Plapi from "../../plapi";
 
 export function Item(props) {
   const theme = useTheme();
   const { ItemObj } = props;
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
+  const [message , setMessage] = React.useState("");
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget); 
+  const handleClick = (message) => {
     setOpen(true);
-   
+    setMessage(message);
   };
+
+const handleClose = (event, reason) => {
+  if (reason === "clickaway") {
+    return;
+  }
+
+  setOpen(false);
+};
 
   const handleCallback = (cart_id) => {
     // console.log(ItemObj)
     const item_id = ItemObj.id;
     handleAddItem(cart_id, item_id);
-    setOpen(false) ;
+    setOpen(false);
+  };
+
+  const handleAddItem = async (item_id, message) => {
+    
+    const res = await Plapi.Cart.add_item(item_id);
+    if (!res.error){
+      setOpen(true)
+      setMessage(message);
+
+    }
   };
 
 
-  const handleAddItem = async (cart_id,item_id) => {
-    const res = await Plapi.Cart.add_item(cart_id, item_id);
-  };
+   const handleRemoveItem = async (item_id, message) => {
+     setOpen(true);
+     setMessage(message);
+     const {cart_id} = props ;
+     const res = await Plapi.Cart.remove_item(cart_id, item_id);
+   };
+
 
   return (
     <Container className="item-card">
+      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {`Successfully ${message}`}
+        </Alert>
+      </Snackbar>
+
       <Grid container>
         <Grid item xs={4} md={6}>
           <Avatar
@@ -91,59 +112,40 @@ export function Item(props) {
               >
                 {ItemObj?.price}
               </Button>
-              {props.order ? null : (
-                <>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    sx={{
-                      fontSize: "0.7125rem",
-                      color: "#000000",
-                      minWidth: "50px",
-                      border: "1px solid #000000",
-                      borderRadius: "10px",
-                    }}
-                    onClick={handleClick}
-                  >
-                    ADD +
-                  </Button>
-                  <Popper
-                    open={open}
-                    anchorEl={anchorEl}
-                    placement="bottom-start"
-                    sx={{ borderRadius: "20px" }}
-                  >
-                    <Card className="main-card">
-                      <CardActions
-                        sx={{ justifyContent: "right", padding: "0" }}
-                      >
-                        <IconButton
-                          onClick={() => {
-                            setOpen(false);
-                          }}
-                          sx={{ justifyContent: "right", padding: "1" }}
-                        >
-                          <Close></Close>
-                        </IconButton>
-                      </CardActions>
-                      <CartList parentCallback={handleCallback}></CartList>
-                   
-                        <Button
-                          id="new-cart"
-                          sx={{
-                            fontSize: "0.80rem",
-                            color: "#000000",
-                          }}
-                          onClick={() => {
-                            handleCallback(null);
-                          }}
-                        >
-                          ADD to New Cart
-                        </Button>
-      
-                    </Card>
-                  </Popper>
-                </>
+              {props.cart ? (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    fontSize: "0.7125rem",
+                    color: "#000000",
+                    minWidth: "50px",
+                    border: "1px solid #000000",
+                    borderRadius: "10px",
+                  }}
+                  onClick={() => {
+                    handleRemoveItem(ItemObj.id,"removed item please reload");
+                  }}
+                >
+                  REMOVE -
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    fontSize: "0.7125rem",
+                    color: "#000000",
+                    minWidth: "50px",
+                    border: "1px solid #000000",
+                    borderRadius: "10px",
+                  }}
+                  onClick={() => {
+                    handleAddItem(ItemObj.id,"added item");
+                  }}
+                >
+                  ADD +
+                </Button>
               )}
             </Grid>
           </Grid>
@@ -162,66 +164,6 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-class CartList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-      anchorEl: null,
-      carts : []
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
-  async componentDidMount(){
-    await this.loadData();
-  }  
-  render() {
-    const {carts} = this.state ;
-    return (
-      <Paper style={{ maxHeight: 200, overflow: "auto" }} >
-        <List>
-          {carts.map((cart) => {
-            const labelId = `checkbox-list-secondary-label-${cart?.id}`;
-            const cart_id = cart.id
-            return (
-              <>
-                <ListItem key={cart?.id} disablePadding className="cart-item">
-                  <ListItemButton
-                    onClick={() => {
-                      this.handleClick(cart_id);
-                    }}
-                    value={cart?.id}
-                  >
-                    <IconButton aria-label="cart" sx={{ marginRight: 1 }}>
-                      <StyledBadge
-                        badgeContent={(cart?.items).length}
-                        color="secondary"
-                      >
-                        <ShoppingCartIcon className="header-Icon" />
-                      </StyledBadge>
-                    </IconButton>
-                    <ListItemText primary={cart?.price}></ListItemText>
-                  </ListItemButton>
-                </ListItem>
-              </>
-            );
-          })}
-        </List>
-      </Paper>
-    );
-  }
-  handleClick(cart_id) {
-    this.props.parentCallback(cart_id);
-  }
-
-  async loadData(){
-    const res = await  Plapi.Cart.getFilterList();
-    if (!res.error){
-      this.setState({carts : res})
-      console.log("cart loaded response" )
-    }
-  }
-}
 
 export class ItemList extends React.Component {
   constructor(props) {

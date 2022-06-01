@@ -70,7 +70,6 @@ function SwipeableEdgeDrawer(props) {
         <Button
           size="large"
           href = "/items"
-         
           sx={{ color: "#2fb6ad" }}
           disabled = {disabled}
         >

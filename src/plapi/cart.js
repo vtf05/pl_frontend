@@ -32,7 +32,7 @@ export default class Cart extends Abstract {
         //     this.accessToken
         // );
         const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
-        const res = await fetch(`${this.endpoint}?get_cart`, {
+        const res = await fetch(`${this.endpoint}get_mycart`, {
             headers: {
                 Authorization: `Token ${accessToken}`,
             },
@@ -41,10 +41,11 @@ export default class Cart extends Abstract {
         return this._handleError(res);
     }
 
-    async add_item(cart_id, item_id) {
+
+    async add_item(item_id) {
         const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(
-            `${this.endpoint}add_item/?cart_id=${cart_id}&item_id=${item_id}`, {
+            `${this.endpoint}add_item/?item_id=${item_id}`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Token ${accessToken}`,
@@ -55,6 +56,24 @@ export default class Cart extends Abstract {
         );
         return this._handleError(res);
     }
+
+
+    async remove_item(cart_id, item_id) {
+        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const res = await fetch(
+            `${this.endpoint}remove_item/?cart_id=${cart_id}&item_id=${item_id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Token ${accessToken}`,
+                },
+                method: "POST",
+                body: "",
+            }
+        );
+
+        return this._handleError(res);
+    }
+
     async update(cartId, obj) {
         const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(`${this.endpoint}${cartId}/`, {
