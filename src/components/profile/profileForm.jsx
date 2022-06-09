@@ -27,8 +27,8 @@ import ProfilePic from "../../assets/profile2.jpg";
 import MailIcon from "@mui/icons-material/Mail";
 import CallIcon from "@mui/icons-material/Call";
 import AddCardIcon from "@mui/icons-material/AddCard";
-import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
-import SettingsIcon from "@mui/icons-material/Settings";
+import CameraFrontIcon from "@mui/icons-material/CameraFront";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 // import apis
 import Plapi from "../../plapi";
@@ -51,16 +51,16 @@ export default class ProfileForm extends Component {
       last_name: "",
       email: "",
       mobile: "",
-      navigate :false,
+      navigate: false,
+      selectedImage: null,
     };
-   this.updateData = this.updateData.bind(this); 
+    this.updateData = this.updateData.bind(this);
   }
 
-  async componentDidMount() {
-  }
+  async componentDidMount() {}
 
   render() {
-    const { userObj, walletObject,navigate } = this.state;
+    const { userObj, walletObject, navigate } = this.state;
 
     return (
       <Container sx={{ paddingTop: "4rem", height: "700px" }}>
@@ -108,17 +108,21 @@ export default class ProfileForm extends Component {
                         accept="image/*"
                         id="icon-button-file"
                         type="file"
+                        onChange={this.onFileChange}
                       />
                       <IconButton
                         color="primary"
                         aria-label="upload picture"
                         component="span"
                       >
-                        <DriveFolderUploadIcon
+                        <CameraFrontIcon
                           fontSize="large"
                           sx={{ color: "black" }}
                         />
                       </IconButton>
+                      <Typography variant="caption">
+                        {this.state.selectedImage?.name}
+                      </Typography>
                     </label>
                   </Grid>
                   <Grid item xs={8}>
@@ -144,6 +148,11 @@ export default class ProfileForm extends Component {
       </Container>
     );
   }
+  onFileChange = (event) => {
+    this.setState({ selectedImage: event.target.files[0] });
+    console.log("file found" , event.target.files[0])
+  };
+
   async loadData() {
     const userId = window.localStorage.getItem("userId");
     const res = await Plapi.User.getDetail(userId);
@@ -158,32 +167,36 @@ export default class ProfileForm extends Component {
     });
   };
 
-  async updateData(){
-    const {first_name, last_name, email, mobile} = this.state ;
-    const obj = {} ;
+  async updateData() {
+    const { first_name, last_name, email, mobile ,selectedImage } = this.state;
+    var formdata = new FormData();
+ 
 
-    if (first_name!= ""){
-        obj.first_name = first_name ;
+    if (first_name != "") {
+      formdata.append("first_name" , first_name);
     }
 
     if (last_name != "") {
-        obj.last_name = last_name ;
+      formdata.append("last_name", last_name);
+
     }
 
     if (email != "") {
-        obj.email = email ;
+      formdata.append("email", email);
+
     }
 
     if (mobile != "") {
-        obj.mobile = mobile ;
+      formdata.append("mobile", mobile);
     }
 
-   
+    if (selectedImage != null) {
+      formdata.append("profile_photo", selectedImage , selectedImage.name);
+    }
     const userId = window.localStorage.getItem("userId");
-    const res = Plapi.User.update(userId,obj);
-    if(! res.error){
-        this.setState({navigate:true})
+    const res = Plapi.User.update(userId, formdata);
+    if (!res.error) {
+      this.setState({ navigate: true });
     }
   }
-
 }

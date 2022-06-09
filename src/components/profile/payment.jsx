@@ -179,7 +179,8 @@ export default class Payment extends Component {
   async showRazorpay() {
     //  this will redirect to razorpay page
     const res = await this.loadScript();
-    const obj = { ammount: this.state.ammount, user: this.state.name };
+    const obj = { ammount: this.state.ammount, user: this.state.name ,payment_type:'walet'};
+    // we will pass the amount and product name to the backend using form data};
     // we will pass the amount and product name to the backend using form data
 
     const data = await Plapi.Wallet.makePayment(obj, res);
@@ -207,7 +208,7 @@ export default class Payment extends Component {
         address: "Razorpay Corporate Office",
       },
       theme: {
-        color: "#3399cc",
+        color: "#000000",
       },
     };
 

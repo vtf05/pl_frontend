@@ -36,19 +36,18 @@ class LoginView extends Component {
       number: 0,
       otp: 0,
       showOtp: "none",
-      navigate :false ,
-      alert : false,
+      navigate: false,
+      alert: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSend = this.handleSend.bind(this);
     this.handleOtpChange = this.handleOtpChange.bind(this);
     this.handleOtp = this.handleOtp.bind(this);
-    this.handleAlert  = this.handleAlert.bind(this);
-    
+    this.handleAlert = this.handleAlert.bind(this);
   }
 
   render() {
-    const { showOtp, navigate ,alert} = this.state;
+    const { showOtp, navigate, alert } = this.state;
     return (
       <Box paddingTop={10}>
         <div>
@@ -101,7 +100,7 @@ class LoginView extends Component {
                   color="inherit"
                   size="small"
                   onClick={() => {
-                   this.handleAlert();
+                    this.handleAlert();
                   }}
                 >
                   <CloseIcon fontSize="inherit" />
@@ -116,9 +115,9 @@ class LoginView extends Component {
       </Box>
     );
   }
-  
-  handleAlert(){
-      this.setState({alert:false})
+
+  handleAlert() {
+    this.setState({ alert: false });
   }
 
   handleChange(event) {
@@ -135,11 +134,10 @@ class LoginView extends Component {
     const res = await Plapi.User.getOtp(number);
     if (!res.error) {
       window.localStorage.setItem("number", number);
-      this.setState({ showOtp: "true"  });
-       this.setState({ alert: false });
+      this.setState({ showOtp: "true" });
+      this.setState({ alert: false });
     }
   }
- 
 
   async handleOtp() {
     const otp = this.state.otp;
@@ -148,11 +146,23 @@ class LoginView extends Component {
       const token = res.token;
       localStorage.setItem("access_token", token);
       const user = await Plapi.User.get(this.state.number);
-      this.setState({navigate:true})
+      this.setState({ navigate: true });
       console.log("this is the user", user);
       window.localStorage.setItem("userId", user[0].id);
+      await this._loadWalletData();
     }
+  }
 
+  async _loadWalletData() {
+    const userId = window.localStorage.getItem("userId");
+    const wallet = await Plapi.Wallet.getDetail(userId);
+    if (!wallet.error) {
+      this.setState({ walletObject: wallet[0] });
+      window.sessionStorage.setItem("wb", wallet[0]?.cur_balance);
+    } else {
+      console.log("profile of given id was not provided");
+      // there should be some fall back content here.
+    }
   }
 }
 

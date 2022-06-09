@@ -33,12 +33,19 @@ class App extends Component {
   }
   async componentDidMount() {}
   render() {
+    const access_token = window.localStorage.getItem('access_token')
+    if (access_token) {
+      var start_page = <HomeView/>
+    }
+    else {
+       start_page = <LoginView />;
+    }
     return (
       <div className="App">
         <Header />
         <Router>
           <Routes>
-            <Route exact path="/" element={<LoginView />} />
+            <Route exact path="/" element={start_page} />
             <Route exact path="/home" element={<HomeView />} />
             <Route exact path="/login" element={<LoginView />} />
             <Route exact path="/profile" element={<Profile />} />

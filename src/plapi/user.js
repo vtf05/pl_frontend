@@ -75,14 +75,17 @@ export default class User extends Abstract {
 
     async update(userId, obj) {
         const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
-        const res = await fetch(`${this.endpoint}api/v1/users/user/${userId}/`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Token ${accessToken}`,
-            },
-            method: "PATCH",
-            body: JSON.stringify(obj),
-        });
+        const res = await fetch(
+            `${this.endpoint}api/v1/users/user/${userId}/`, {
+                headers: {
+                    // "Content-Type": "multipart/form-data;  boundary=''",
+                    Authorization: `Token ${accessToken}`,
+                },
+                method: "PATCH",
+                body: obj,
+                redirect: "follow",
+            }
+        );
         return this._handleError(res);
     }
 

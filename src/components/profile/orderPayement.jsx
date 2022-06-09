@@ -163,7 +163,7 @@ class OrderPay extends Component {
     const res = await this.loadScript();
     
 
-    const obj = { ammount: this.state.order_price, user: this.state.name };
+    const obj = { ammount: this.state.order_price, user: this.state.name ,payment_type:'cart'};
     // we will pass the amount and product name to the backend using form data
 
     const data = await Plapi.Wallet.makePayment(obj, res);
@@ -197,7 +197,7 @@ class OrderPay extends Component {
 
     var rzp1 = new window.Razorpay(options);
     rzp1.open();
-    this.handleSuccess();
+    // this.handleSuccess();
     //  after the successfull payment we need to redirect to the wallet page
   }
   async handleSuccess(){

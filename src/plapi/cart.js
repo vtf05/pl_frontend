@@ -17,7 +17,7 @@ export default class Cart extends Abstract {
         //     this.accessToken
         // );
         const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
-        const res = await fetch(`${this.endpoint}?user__id=${user}`, {
+        const res = await fetch(`${this.endpoint}?user__id=${user}&paid=true`, {
             headers: {
                 Authorization: `Token ${accessToken}`,
             },
