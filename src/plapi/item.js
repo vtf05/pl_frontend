@@ -12,11 +12,11 @@ export default class Item extends Abstract {
      */
     async getList() {
         // console.log(
-        //     "request will be made and the value of access_token is ",
+        //     "request will be made and the value of pl_access_token is ",
         //     this.accessToken
         // );
 
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(`${this.endpoint}`, {
             headers: {
                 Authorization: `Token ${accessToken}`,
@@ -26,7 +26,7 @@ export default class Item extends Abstract {
     }
 
     // async create(obj) {
-    //     const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+    //     const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
     //     const res = await fetch(this.endpoint, {
     //         headers: {
     //             "Content-Type": "application/json",

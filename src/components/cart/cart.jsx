@@ -28,10 +28,10 @@ function Cartl2(props) {
   const order_price = cartObj.price;
   const navigate = useNavigate();
 
-  const handleNavigate = (price, orderid) => {
+  const handleNavigate = (price,cart_id) => {
     // console.log("order_price", price);
     navigate("/order_payment", {
-      state: { order_price: price, cart_id: orderid },
+      state: { order_price: price, cart_id:cart_id },
     });
   };
   return (
@@ -93,7 +93,6 @@ export default class CartL extends React.Component {
   async loadData() {
     const res = await Plapi.Cart.getFilterList();
     if (!res.error) {
-      console.log("loaded");
       this.setState({ cartObj: res[0] });
       this.setState({ loaded: true });
     }

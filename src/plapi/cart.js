@@ -13,10 +13,10 @@ export default class Cart extends Abstract {
 
     async getList(user) {
         // console.log(
-        //     "request will be made and the value of access_token is ",
+        //     "request will be made and the value of pl_access_token is ",
         //     this.accessToken
         // );
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(`${this.endpoint}?user__id=${user}&paid=true`, {
             headers: {
                 Authorization: `Token ${accessToken}`,
@@ -28,10 +28,10 @@ export default class Cart extends Abstract {
 
     async getFilterList() {
         // console.log(
-        //     "request will be made and the value of access_token is ",
+        //     "request will be made and the value of pl_access_token is ",
         //     this.accessToken
         // );
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(`${this.endpoint}get_mycart`, {
             headers: {
                 Authorization: `Token ${accessToken}`,
@@ -41,25 +41,21 @@ export default class Cart extends Abstract {
         return this._handleError(res);
     }
 
-
     async add_item(item_id) {
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
-        const res = await fetch(
-            `${this.endpoint}add_item/?item_id=${item_id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Token ${accessToken}`,
-                },
-                method: "POST",
-                body: "",
-            }
-        );
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
+        const res = await fetch(`${this.endpoint}add_item/?item_id=${item_id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Token ${accessToken}`,
+            },
+            method: "POST",
+            body: "",
+        });
         return this._handleError(res);
     }
 
-
     async remove_item(cart_id, item_id) {
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(
             `${this.endpoint}remove_item/?cart_id=${cart_id}&item_id=${item_id}`, {
                 headers: {
@@ -75,7 +71,7 @@ export default class Cart extends Abstract {
     }
 
     async update(cartId, obj) {
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(`${this.endpoint}${cartId}/`, {
             headers: {
                 "Content-Type": "application/json",
@@ -84,6 +80,21 @@ export default class Cart extends Abstract {
             method: "PATCH",
             body: JSON.stringify(obj),
         });
+        return this._handleError(res);
+    }
+
+    async getOtp(cart_id) {
+
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
+        const res = await fetch(
+            `${this.endpoint}activate_cart_req/?cart_id=${cart_id}`, {
+                headers: {
+                    Authorization: `Token ${accessToken}`,
+                },
+                method: "POST",
+            }
+        );
+
         return this._handleError(res);
     }
 }

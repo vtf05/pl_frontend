@@ -144,7 +144,7 @@ class LoginView extends Component {
     const res = await Plapi.User.sendOtp(otp);
     if (!res.error) {
       const token = res.token;
-      localStorage.setItem("access_token", token);
+      localStorage.setItem("pl_access_token", token);
       const user = await Plapi.User.get(this.state.number);
       this.setState({ navigate: true });
       console.log("this is the user", user);

@@ -14,7 +14,7 @@ export default class User extends Abstract {
      **/
 
     async getDetail(userId) {
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(`${this.endpoint}api/v1/users/user/${userId}/`, {
             headers: {
                 Authorization: `Token ${accessToken}`,
@@ -62,7 +62,7 @@ export default class User extends Abstract {
      * @returns
      */
     async get(mobile) {
-        const accessToken = localStorage.getItem("access_token");
+        const accessToken = localStorage.getItem("pl_access_token");
         const res = await fetch(`${this.endpoint}api/v1/users/user/?mobile=${mobile}`, {
             headers: {
                 Authorization: `Token ${accessToken}`,
@@ -74,7 +74,7 @@ export default class User extends Abstract {
     }
 
     async update(userId, obj) {
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(
             `${this.endpoint}api/v1/users/user/${userId}/`, {
                 headers: {
@@ -142,10 +142,10 @@ export default class User extends Abstract {
      * Helper to logout the user
      */
     async logout() {
-        if (localStorage.getItem("access_token")) {
-            const accessToken = localStorage.getItem("access_token");
+        if (localStorage.getItem("pl_access_token")) {
+            const accessToken = localStorage.getItem("pl_access_token");
             // revoke the token
-            window.localStorage.removeItem("access_token");
+            window.localStorage.removeItem("pl_access_token");
             const endpoint = this.base.concat("o/revoke_token/");
             const res = await fetch(endpoint, {
                 body: `token=${accessToken}&client_id=${this.clientId}&client_secret=${this.clientSecret}`,
@@ -160,7 +160,7 @@ export default class User extends Abstract {
 
     async userFollow(obj) {
         const endpoint = this.endpoint.concat("/user_follow/");
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(endpoint, {
             headers: {
                 "Content-Type": "application/json",
@@ -175,7 +175,7 @@ export default class User extends Abstract {
     async getFollower(userId) {
         const endpoint = this.endpoint.concat(`/user_follow/?user=${userId}/`);
 
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(endpoint, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -186,7 +186,7 @@ export default class User extends Abstract {
 
     async search(keyword) {
         const endpoint = `${this.endpoint}/user/?search=${keyword}`;
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(endpoint, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,

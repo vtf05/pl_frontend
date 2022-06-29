@@ -33,12 +33,11 @@ class App extends Component {
   }
   async componentDidMount() {}
   render() {
-    const access_token = window.localStorage.getItem('access_token')
-    if (access_token) {
-      var start_page = <HomeView/>
-    }
-    else {
-       start_page = <LoginView />;
+    const pl_access_token = window.localStorage.getItem("pl_access_token");
+    if (pl_access_token) {
+      var start_page = <HomeView />;
+    } else {
+      start_page = <LoginView />;
     }
     return (
       <div className="App">

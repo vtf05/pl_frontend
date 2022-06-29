@@ -13,10 +13,10 @@ export default class Wallet extends Abstract {
      */
     async getDetail(userId) {
         // console.log(
-        //     "request will be made and the value of access_token is ",
+        //     "request will be made and the value of pl_access_token is ",
         //     this.accessToken
         // );
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(`${this.endpoint}?user__id=${userId}`, {
             headers: {
                 Authorization: `Token ${accessToken}`,
@@ -26,10 +26,10 @@ export default class Wallet extends Abstract {
     }
     async getTransaction(userId) {
         // console.log(
-        //     "request will be made and the value of access_token is ",
+        //     "request will be made and the value of pl_access_token is ",
         //     this.accessToken
         // );
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(`${this.base}api/v1/wallet/transaction/?user__id=${userId}`, {
             headers: {
                 Authorization: `Token ${accessToken}`,
@@ -42,7 +42,7 @@ export default class Wallet extends Abstract {
         // we will send the response we've got from razorpay to the backend to validate the payment
 
         const endpoint = "http://localhost:8000/api/v1/wallet/payment/success/";
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(endpoint, {
             headers: {
                 "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export default class Wallet extends Abstract {
     async makePayment(obj, response) {
         // console.log(obj.ammount, obj)
         const endpoint = "http://localhost:8000/api/v1/wallet/pay/";
-        const accessToken = localStorage.getItem("access_token") || {}; // this is getting repeated every where find a solution.
+        const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(endpoint, {
             headers: {
                 "Content-Type": "application/json",

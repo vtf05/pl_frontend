@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Button,
+  CardActions,
   CardContent,
   Container,
   Divider,
@@ -11,6 +12,7 @@ import {
 } from "@mui/material";
 import { useNavigate} from "react-router-dom" ;
 import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -61,13 +63,26 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function OrderList(props) {
  const [anchorEl, setAnchorEl] = useState(null);
+ const [otp , setOtp] = useState("");
 
- const handleClick = (event) => {
+ const handleClick= (event, order_id) => {
    setAnchorEl(event.currentTarget);
+   handleOtp(order_id);
  };
 
  const handleClose = () => {
    setAnchorEl(null);
+ };
+
+ const handleOtp = async(order_id) => {
+  const res = await Plapi.Cart.getOtp(order_id);
+  if(!res.error){
+    setOtp(res.otp);
+    // setTimeout(()=>{setOtp(res.otp)},60000)
+  }
+  else {
+    setOtp("please try again error occured");
+  }
  };
 //  const navigate = useNavigate() ;
 
@@ -96,13 +111,14 @@ function OrderList(props) {
 
             <StyledTableCell align="center">ORDERID</StyledTableCell>
             <StyledTableCell align="center">AMOUNT</StyledTableCell>
-            <StyledTableCell align="center"> CASHBACK</StyledTableCell>
+            <StyledTableCell align="center">CASHBACK</StyledTableCell>
+            <StyledTableCell align="center">OTP</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          { orders.map((order) => (
+          {orders.map((order) => (
             <>
-              <StyledTableRow key={order?.id} onClick={handleClick}>
+              <StyledTableRow key={order?.id}>
                 {props.active ? (
                   <StyledTableCell align="center">
                     <Button
@@ -114,6 +130,7 @@ function OrderList(props) {
                         minWidth: "50px",
                         float: "right",
                       }}
+                      onClick={(event) => handleClick(event, order?.id)}
                     >
                       Activate
                     </Button>
@@ -122,9 +139,11 @@ function OrderList(props) {
 
                 <StyledTableCell align="center">{order?.id}</StyledTableCell>
                 <StyledTableCell align="center">{order?.price}</StyledTableCell>
+
                 <StyledTableCell align="center">
                   {order?.cashback}
                 </StyledTableCell>
+                <StyledTableCell align="center">{otp}</StyledTableCell>
               </StyledTableRow>
               <Popover
                 id={id}
@@ -137,23 +156,24 @@ function OrderList(props) {
                 }}
                 sx={{ borderRadius: "20px" }}
               >
-                {order.items.map((item) => (
-                  <Grid
-                   key = {item.id}
-                    item
-                    xs={12}
-                    md={4}
-                    marginTop={1}
-                    sx={{
-                      boxShadow:
-                        "rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px",
-                      borderRadius: "20px",
-                    }}
-                  >
-                    <Item ItemObj={item} order={props.active}></Item>
-                  </Grid>
-                ))}
-               
+                <Card>
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      {otp}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                      OTP is Generated Please Wait
+                    </Typography>
+                    <Typography variant="body2">
+                      OTP will apear in 60 sec
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small" onClick={handleClose}>
+                      close
+                    </Button>
+                  </CardActions>
+                </Card>
               </Popover>
             </>
           ))}

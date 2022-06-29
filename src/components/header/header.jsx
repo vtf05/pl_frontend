@@ -38,10 +38,9 @@ class Header extends Component {
     this.state = {
       anchorEl: null,
     };
-   this.handleClick = this.handleClick.bind(this);
-   this.handleClose = this.handleClose.bind(this);
-   this.handleLogout = this.handleLogout.bind(this);
-
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
   render() {
     const { anchorEl } = this.state;
@@ -64,7 +63,6 @@ class Header extends Component {
               }}
             >
               <WidgetsIcon className="header-Icon" fontSize="medium" />
-            
             </IconButton>
             <Menu
               size="small"
@@ -126,7 +124,12 @@ class Header extends Component {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Logout">
-                <IconButton aria-label="Logout" size="3x" onClick={this.handleLogout} href="/">
+                <IconButton
+                  aria-label="Logout"
+                  size="3x"
+                  onClick={this.handleLogout}
+                  href="/"
+                >
                   <LogoutIcon color="inherit" className="header-Icon" />
                 </IconButton>
               </Tooltip>
@@ -144,26 +147,23 @@ class Header extends Component {
   //   const res = await ZcAppAPI.User.logout();
   //   if (res.status === 200) {
   //     // I think this could be moved to User's logout function
-  //     // remove the access_token from the local storage
-  //     localStorage.removeItem("access_token");
+  //     // remove the pl_access_token from the local storage
+  //     localStorage.removeItem("pl_access_token");
   //     // redirect to login page or a logout page in case we create one.
   //   }
   // }
   handleClose() {
     this.setState({ anchorEl: null });
-     console.log(this.state,);
+    console.log(this.state);
   }
   handleClick(event) {
-
     this.setState({ anchorEl: event.currentTarget });
-   
   }
-  handleLogout(){
-    console.log("hey i am called ")
-    window.localStorage.removeItem("access_token")
+  handleLogout() {
+    console.log("hey i am called ");
+    window.localStorage.removeItem("pl_access_token");
     window.localStorage.removeItem("userId");
     window.localStorage.removeItem("number");
-    
   }
 }
 
