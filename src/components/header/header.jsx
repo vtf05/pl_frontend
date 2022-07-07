@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Navigate } from "react-router";
 import AppBar from "@mui/material/AppBar";
+import Badge from "@mui/material/Badge";
 import { styled, alpha } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -25,6 +26,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 //import css
 import "./header.css";
 // api
+import Plapi from "../../plapi";
+
 
 const options = [
   { name: "LOGIN", url: "/login" },
@@ -32,18 +35,25 @@ const options = [
   { name: "PROFILE", url: "/profile" },
 ];
 
+
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
       anchorEl: null,
+      cartLen:0 
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.getCart = this.getCart.bind(this);
   }
+   componentDidMount(){
+     this.getCart();
+  }
+  
   render() {
-    const { anchorEl } = this.state;
+    const { anchorEl,cartLen } = this.state;
     const open = Boolean(anchorEl);
     return (
       <Box sx={{ flexGrow: 1, md: 6 }}>
@@ -115,7 +125,18 @@ class Header extends Component {
             <div className="util-icon">
               <Tooltip title="Cart">
                 <IconButton aria-label="create" size="3x" href="/cart">
-                  <ShoppingCartIcon color="inherit" className="header-Icon" />
+                  <Badge
+                    badgeContent={cartLen}
+                    color="secondary"
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    fontSize="small"
+                    
+                  >
+                    <ShoppingCartIcon color="inherit" className="header-Icon" />
+                  </Badge>
                 </IconButton>
               </Tooltip>
               <Tooltip title="Account">
@@ -164,6 +185,13 @@ class Header extends Component {
     window.localStorage.removeItem("pl_access_token");
     window.localStorage.removeItem("userId");
     window.localStorage.removeItem("number");
+  }
+  async getCart(){
+    const res = await Plapi.Cart.getFilterList();
+    if (!res.error) {
+      this.setState({ cartLen: res[0].items.length });
+      this.setState({ loaded: true });
+    }
   }
 }
 

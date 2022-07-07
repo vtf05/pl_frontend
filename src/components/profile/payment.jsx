@@ -42,6 +42,7 @@ export default class Payment extends Component {
       errorOpen: false,
     };
     this.submitRegistration = this.submitRegistration.bind(this);
+    this.errorClose = this.errorClose.bind(this);
   }
   errorClose(e) {
     this.setState({
@@ -90,18 +91,6 @@ export default class Payment extends Component {
             <Item key={16} elevation={16}>
               <Paper sx={{ padding: "15px", borderRadius: "20px" }}>
                 <form onSubmit={() => this.submitRegistration}>
-                  <FormControl required fullWidth margin="normal">
-                    <InputLabel htmlFor="Full-Name">Full-Name</InputLabel>
-                    <Input
-                      name="name"
-                      type="name"
-                      autoComplete="name"
-                      onChange={this.handleChange("name")}
-                    />
-                    <FormHelperText>
-                      Enter your full name as per your bank-account
-                    </FormHelperText>
-                  </FormControl>
                   <FormControl required fullWidth margin="normal">
                     <InputLabel htmlFor="Ammount">Ammount</InputLabel>
                     <Input
@@ -201,8 +190,8 @@ export default class Payment extends Component {
       },
       prefill: {
         name: "User's name",
-        email: "User's email",
-        contact: "User's phone",
+        email: "xyz@gmail.com",
+        contact: `${localStorage.getItem("number")}`,
       },
       notes: {
         address: "Razorpay Corporate Office",

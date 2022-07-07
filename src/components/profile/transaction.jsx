@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 // icon
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
+import "./profile.css"
 
 function createData(DATE, Order_ID, Total_Ammount, Cost_back, Used) {
   return { DATE, Order_ID, Total_Ammount, Cost_back, Used };
@@ -43,19 +44,21 @@ export default function DenseTable(props) {
       >
         <TableHead>
           <TableRow>
-            <TableCell className="table-font">Date</TableCell>
-            <TableCell className="table-font" align="right">
+            <TableCell className="table-font" align="center">
+              Date
+            </TableCell>
+            <TableCell className="table-font" align="center">
               Payment-ID
             </TableCell>
-            <TableCell className="table-font" align="right">
-             Ammount
+            <TableCell className="table-font" align="center">
+              Amount
             </TableCell>
-            <TableCell className="table-font" align="right">
+            <TableCell className="table-font" align="center">
               {" "}
-              Cost-Back
+              Cashback
             </TableCell>
-            <TableCell className="table-font" align="right">
-              Used
+            <TableCell className="table-font" align="center">
+              Success
             </TableCell>
           </TableRow>
         </TableHead>
@@ -66,9 +69,7 @@ export default function DenseTable(props) {
               key={row.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.payment_date}
-              </TableCell>
+              <TableCell align="center">{row.payment_date}</TableCell>
               <TableCell align="center">{row.payment_id}</TableCell>
               <TableCell align="center">{row?.payment_amount}</TableCell>
               <TableCell align="center">{row?.Cost_back}</TableCell>

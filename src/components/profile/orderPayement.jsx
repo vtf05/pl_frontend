@@ -57,7 +57,6 @@ class OrderPay extends Component {
     };
     this.loadData = this.loadData.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
     this.handlePay = this.handlePay.bind(this);
     
 
@@ -73,18 +72,7 @@ class OrderPay extends Component {
       <Container sx={{ paddingTop: "10rem", height: "700px" }}>
         <Paper style={styles.paperContainer} className="main-card">
           <CardContent>
-            <Grid item xs={12}>
-              <Typography variant="h6">Enter Your Details</Typography>
-            </Grid>
             <Grid container spacing={1} justifyContent="start">
-              <Grid item xs={12}>
-                <TextField
-                  id="standard-size-normal"
-                  label="your name"
-                  variant="standard"
-                  onChange={this.handleNameChange}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <Typography variant="button">
                   {`Total Ammount to pay ₹ ${order_price}`}
@@ -98,7 +86,7 @@ class OrderPay extends Component {
                     onChange={this.handleChange}
                   />
                   <Typography variant="caption">
-                    {`Do you want to use your wallet balance ₹ ${wallet_bal}`}
+                    {`Do you want to use your wallet balance ₹ ${wallet_bal || 0}`}
                   </Typography>
                 </Stack>
               </Grid>
@@ -125,9 +113,9 @@ class OrderPay extends Component {
   handleChange(event) {
     this.setState({ checked: event.target.checked });
   }
-  handleNameChange(event) {     
-    this.setState({ name: event.target.value });
-  }
+  // handleNameChange(event) {     
+  //   this.setState({ name: event.target.value });
+  // }
 
   async loadData() {
     console.log("order_price", this.props)
@@ -183,9 +171,9 @@ class OrderPay extends Component {
          Plapi.Wallet.handlePaymentSuccess(response);
       },
       prefill: {
-        name: "User's name",
-        email: "User's email",
-        contact: "User's phone",
+        name: "Avinas",
+        email: "user@gmail.com",
+        contact: `${localStorage.getItem('number')}`,
       },
       notes: {
         address: "Razorpay Corporate Office",

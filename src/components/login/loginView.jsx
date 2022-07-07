@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import { Navigate } from "react-router-dom";
+import Checkbox from "@mui/material/Checkbox";
 
 
 // Import material-ui components
@@ -26,6 +27,8 @@ import lottie from "../../assets/animation/login.json";
 
 import Plapi from '../../plapi';
 
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
 
 // Constants
 // const { Control, Group, Text } = Form;
@@ -38,16 +41,18 @@ class LoginView extends Component {
       showOtp: "none",
       navigate: false,
       alert: false,
+      checked : false ,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSend = this.handleSend.bind(this);
     this.handleOtpChange = this.handleOtpChange.bind(this);
     this.handleOtp = this.handleOtp.bind(this);
     this.handleAlert = this.handleAlert.bind(this);
+    this.handleChecked = this.handleChecked.bind(this);
   }
 
   render() {
-    const { showOtp, navigate, alert } = this.state;
+    const { showOtp, navigate, alert, checked} = this.state;
     return (
       <Box paddingTop={10}>
         <div>
@@ -90,6 +95,19 @@ class LoginView extends Component {
                 ),
               }}
             />
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent= "center"
+              sx={{ display: `${showOtp}` }}
+              >
+              <Checkbox
+                {...label}
+                checked={checked}
+                onChange={this.handleChecked}
+              />
+              <Typography variant="caption">{` Remember me`}</Typography>
+            </Stack>
           </Grid>
           {navigate ? <Navigate to="/home" replace={true} /> : null}
           {alert ? (
@@ -122,6 +140,10 @@ class LoginView extends Component {
 
   handleChange(event) {
     this.setState({ number: event.target.value });
+  }
+
+  handleChecked(event) {
+    this.setState({ checked: event.target.checked });
   }
 
   handleOtpChange(event) {
