@@ -41,7 +41,8 @@ class Header extends Component {
     super(props);
     this.state = {
       anchorEl: null,
-      cartLen:0 
+      cartLen:0 ,
+      login : false ,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -49,113 +50,122 @@ class Header extends Component {
     this.getCart = this.getCart.bind(this);
   }
    componentDidMount(){
+     const login = localStorage.getItem("pl_access_token");
      this.getCart();
+     this.setState({login :login})
   }
   
   render() {
-    const { anchorEl,cartLen } = this.state;
+    const { anchorEl,cartLen,login } = this.state;
     const open = Boolean(anchorEl);
     return (
       <Box sx={{ flexGrow: 1, md: 6 }}>
         <AppBar position="static" className="header">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={(event) => {
-                this.handleClick(event);
-              }}
-            >
-              <WidgetsIcon className="header-Icon" fontSize="medium" />
-            </IconButton>
-            <Menu
-              size="small"
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={this.handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <Stack textAlign="left">
-                <Button
-                  className="menu-buttons"
-                  size="small"
-                  href="/home"
-                  onClick={this.handleClose}
-                >
-                  Home
-                </Button>
-                <Divider />
-                <Button
-                  className="menu-buttons"
-                  size="small"
-                  href="/orders"
-                  onClick={this.handleClose}
-                >
-                  Orders
-                </Button>
-                <Divider />
-                <Button
-                  className="menu-buttons"
-                  size="small"
-                  href="/items"
-                  onClick={this.handleClose}
-                >
-                  Items
-                </Button>
-                <Divider />
-                <Button
-                  className="menu-buttons"
-                  size="small"
-                  href="/profile"
-                  onClick={this.handleClose}
-                >
-                  Profile
-                </Button>
-              </Stack>
-            </Menu>
-            <div className="util-icon">
-              <Tooltip title="Cart">
-                <IconButton aria-label="create" size="3x" href="/cart">
-                  <Badge
-                    badgeContent={cartLen}
-                    color="secondary"
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    fontSize="small"
-                    
+          {login ? (
+            <Toolbar>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                sx={{ mr: 2 }}
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={(event) => {
+                  this.handleClick(event);
+                }}
+              >
+                <WidgetsIcon className="header-Icon" fontSize="medium" />
+              </IconButton>
+              <Menu
+                size="small"
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={this.handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <Stack textAlign="left">
+                  <Button
+                    className="menu-buttons"
+                    size="small"
+                    href="/home"
+                    onClick={this.handleClose}
                   >
-                    <ShoppingCartIcon color="inherit" className="header-Icon" />
-                  </Badge>
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Account">
-                <IconButton aria-label="Account" size="3x" href="/profile">
-                  <AccountCircleIcon color="inherit" className="header-Icon" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Logout">
-                <IconButton
-                  aria-label="Logout"
-                  size="3x"
-                  onClick={this.handleLogout}
-                  href="/"
-                >
-                  <LogoutIcon color="inherit" className="header-Icon" />
-                </IconButton>
-              </Tooltip>
-            </div>
-          </Toolbar>
+                    Home
+                  </Button>
+                  <Divider />
+                  <Button
+                    className="menu-buttons"
+                    size="small"
+                    href="/orders"
+                    onClick={this.handleClose}
+                  >
+                    Orders
+                  </Button>
+                  <Divider />
+                  <Button
+                    className="menu-buttons"
+                    size="small"
+                    href="/items"
+                    onClick={this.handleClose}
+                  >
+                    Items
+                  </Button>
+                  <Divider />
+                  <Button
+                    className="menu-buttons"
+                    size="small"
+                    href="/profile"
+                    onClick={this.handleClose}
+                  >
+                    Profile
+                  </Button>
+                </Stack>
+              </Menu>
+              <div className="util-icon">
+                <Tooltip title="Cart">
+                  <IconButton aria-label="create" size="3x" href="/cart">
+                    <Badge
+                      badgeContent={cartLen}
+                      color="secondary"
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                      }}
+                      fontSize="small"
+                    >
+                      <ShoppingCartIcon
+                        color="inherit"
+                        className="header-Icon"
+                      />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Account">
+                  <IconButton aria-label="Account" size="3x" href="/profile">
+                    <AccountCircleIcon
+                      color="inherit"
+                      className="header-Icon"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Logout">
+                  <IconButton
+                    aria-label="Logout"
+                    size="3x"
+                    onClick={this.handleLogout}
+                    href="/"
+                  >
+                    <LogoutIcon color="inherit" className="header-Icon" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </Toolbar>
+          ) : null}
         </AppBar>
       </Box>
     );

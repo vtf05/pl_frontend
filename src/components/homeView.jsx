@@ -62,9 +62,7 @@ export default class HomeView extends Component {
           value: "items",
           label: "$",
         },
-        {
-          value: "cart",
-        },
+      
       ],
       selectedItem1: "user",
       selectedItem2: "user",
