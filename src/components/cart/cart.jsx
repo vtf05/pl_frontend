@@ -48,12 +48,16 @@ function Cartl2(props) {
             borderRadius: "20px",
           }}
         >
-          <Item ItemObj={item} cart_id={cart_id} cart={true} />
+          <Item
+            ItemObj={item.item}
+            cart_id={cart_id}
+            cart={true}
+            count={item.count}
+          />
         </Grid>
       ))}
       <Card className="order-pay">
         <Stack>
-         
           <Button
             sx={{
               backgroundColor: "rgb(4 4 4)!important",
@@ -67,7 +71,7 @@ function Cartl2(props) {
               handleNavigate(order_price, cart_id);
             }}
           >
-          {`Proceed to pay ₹ ${order_price}`}
+            {`Proceed to pay ₹ ${order_price}`}
           </Button>
         </Stack>
       </Card>

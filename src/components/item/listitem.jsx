@@ -124,10 +124,13 @@ const handleClose = (event, reason) => {
                     borderRadius: "10px",
                   }}
                   onClick={() => {
-                    handleRemoveItem(ItemObj.id,"removed item please reload");
+                    handleRemoveItem(
+                      ItemObj.id,
+                      "removed item please reload the page"
+                    );
                   }}
                 >
-                  REMOVE -
+                  REMOVE - {props.count}
                 </Button>
               ) : (
                 <Button
@@ -141,7 +144,10 @@ const handleClose = (event, reason) => {
                     borderRadius: "10px",
                   }}
                   onClick={() => {
-                    handleAddItem(ItemObj.id,"added item");
+                    handleAddItem(
+                      ItemObj.id,
+                      "added item please see your cart"
+                    );
                   }}
                 >
                   ADD +
@@ -149,6 +155,7 @@ const handleClose = (event, reason) => {
               )}
             </Grid>
           </Grid>
+          <></>
         </Grid>
       </Grid>
     </Container>
