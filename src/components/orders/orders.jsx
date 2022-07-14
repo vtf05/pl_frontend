@@ -63,124 +63,158 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function OrderList(props) {
  const [anchorEl, setAnchorEl] = useState(null);
- const [otp , setOtp] = useState("");
+ const [anchorEl1, setAnchorEl1] = useState(null);
 
- const handleClick= (event, order_id) => {
+ const [otp, setOtp] = useState("");
+
+ const handleClick = (event) => {
    setAnchorEl(event.currentTarget);
-   handleOtp(order_id);
  };
 
  const handleClose = () => {
    setAnchorEl(null);
+   setAnchorEl1(null);
+ };
+ const handleConfirm = (event, order_id) => {
+   console.log("this has tp be done");
+   setAnchorEl(null);
+   setAnchorEl1(event.currentTarget);
+    handleOtp(order_id);
  };
 
- const handleOtp = async(order_id) => {
-  const res = await Plapi.Cart.getOtp(order_id);
-  if(!res.error){
-    setOtp(res.otp);
-    // setTimeout(()=>{setOtp(res.otp)},60000)
-  }
-  else {
-    setOtp("please try again error occured");
-  }
+ const handleOtp = async (order_id) => {
+   const res = await Plapi.Cart.getOtp(order_id);
+   if (!res.error) {
+     setOtp(res.otp);
+     // setTimeout(()=>{setOtp(res.otp)},60000)
+   } else {
+     setOtp("please try again error occured");
+   }
  };
-//  const navigate = useNavigate() ;
+ //  const navigate = useNavigate() ;
 
-//  const handleNavigate =(price,orderid) => {
-//     // console.log("order_price", price);
-//     navigate("/order_payment", { state: {order_price : price,cart_id : orderid}});
-//  }
+ //  const handleNavigate =(price,orderid) => {
+ //     // console.log("order_price", price);
+ //     navigate("/order_payment", { state: {order_price : price,cart_id : orderid}});
+ //  }
 
  const open = Boolean(anchorEl);
  const id = open ? "simple-popover" : undefined;
-   
-//  task : dense the table  , add activate buttom  , 3 coulmns 
-//  wallet integration with payement
-//  flipkart , 
+ const open1 = Boolean(anchorEl1);
+ const id1 = open1 ? "simple-popover" : undefined;
+ //  task : dense the table  , add activate buttom  , 3 coulmns
+ //  wallet integration with payement
+ //  flipkart ,
 
+ const { orders } = props;
+ return (
+   <TableContainer component={Paper}>
+     <Table sx={{ minWidth: 450 }} size="small" aria-label="a dense table">
+       <TableHead>
+         <TableRow>
+           {props.active ? (
+             <StyledTableCell align="center">STATE</StyledTableCell>
+           ) : null}
 
-  const {orders} = props ;
-  return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 450 }} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            {props.active ? (
-              <StyledTableCell align="center">STATE</StyledTableCell>
-            ) : null}
+           <StyledTableCell align="center">ORDERID</StyledTableCell>
+           <StyledTableCell align="center">AMOUNT</StyledTableCell>
+           <StyledTableCell align="center">CASHBACK</StyledTableCell>
+           <StyledTableCell align="center">OTP</StyledTableCell>
+         </TableRow>
+       </TableHead>
+       <TableBody>
+         {orders.map((order) => (
+           <>
+             <StyledTableRow key={order?.id}>
+               {props.active ? (
+                 <StyledTableCell align="center">
+                   <Button
+                     size="small"
+                     variant="outlined"
+                     sx={{
+                       fontSize: "0.60rem",
+                       color: "#2fb6ad",
+                       minWidth: "50px",
+                       float: "right",
+                     }}
+                     onClick={(event) => handleClick(event, order?.id)}
+                   >
+                     Activate
+                   </Button>
+                 </StyledTableCell>
+               ) : null}
 
-            <StyledTableCell align="center">ORDERID</StyledTableCell>
-            <StyledTableCell align="center">AMOUNT</StyledTableCell>
-            <StyledTableCell align="center">CASHBACK</StyledTableCell>
-            <StyledTableCell align="center">OTP</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {orders.map((order) => (
-            <>
-              <StyledTableRow key={order?.id}>
-                {props.active ? (
-                  <StyledTableCell align="center">
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      sx={{
-                        fontSize: "0.60rem",
-                        color: "#2fb6ad",
-                        minWidth: "50px",
-                        float: "right",
-                      }}
-                      onClick={(event) => handleClick(event, order?.id)}
-                    >
-                      Activate
-                    </Button>
-                  </StyledTableCell>
-                ) : null}
+               <StyledTableCell align="center">{order?.id}</StyledTableCell>
+               <StyledTableCell align="center">{order?.price}</StyledTableCell>
 
-                <StyledTableCell align="center">{order?.id}</StyledTableCell>
-                <StyledTableCell align="center">{order?.price}</StyledTableCell>
-
-                <StyledTableCell align="center">
-                  {order?.cashback}
-                </StyledTableCell>
-                <StyledTableCell align="center">{otp}</StyledTableCell>
-              </StyledTableRow>
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: "center",
-                  horizontal: "center",
-                }}
-                sx={{ borderRadius: "20px" }}
-              >
-                <Card>
-                  <CardContent>
-                    <Typography variant="h5" component="div">
-                      {otp}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      OTP is Generated Please Wait
-                    </Typography>
-                    <Typography variant="body2">
-                      OTP will apear in 60 sec
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" onClick={handleClose}>
-                      close
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Popover>
-            </>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+               <StyledTableCell align="center">
+                 {order?.cashback}
+               </StyledTableCell>
+               <StyledTableCell align="center">{otp}</StyledTableCell>
+             </StyledTableRow>
+             <Popover
+               id={id}
+               open={open}
+               anchorEl={anchorEl}
+               onClose={handleClose}
+               anchorOrigin={{
+                 vertical: "center",
+                 horizontal: "center",
+               }}
+               sx={{ borderRadius: "20px" }}
+             >
+               <Card>
+                 <CardContent>
+                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                     If you want to continue press ok
+                   </Typography>
+                 </CardContent>
+                 <CardActions sx={{ justifyContent: "space-between !important"}}>
+                   <Button size="small" onClick={handleClose}>
+                     cancel
+                   </Button>
+                   <Button size="small" onClick={handleConfirm}>
+                     ok
+                   </Button>
+                 </CardActions>
+               </Card>
+             </Popover>
+             <Popover
+               id={id1}
+               open={open1}
+               anchorEl={anchorEl1}
+               onClose={handleClose}
+               anchorOrigin={{
+                 vertical: "center",
+                 horizontal: "center",
+               }}
+               sx={{ borderRadius: "20px" }}
+             >
+               <Card>
+                 <CardContent>
+                   <Typography variant="h5" component="div">
+                     {otp}
+                   </Typography>
+                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                     OTP is Generated Please Wait
+                   </Typography>
+                   <Typography variant="body2">
+                     OTP will apear in 60 sec
+                   </Typography>
+                 </CardContent>
+                 <CardActions>
+                   <Button size="small" onClick={handleClose}>
+                     close
+                   </Button>
+                 </CardActions>
+               </Card>
+             </Popover>
+           </>
+         ))}
+       </TableBody>
+     </Table>
+   </TableContainer>
+ );
 }
 
 export default class Order extends Component {
