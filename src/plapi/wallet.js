@@ -3,7 +3,7 @@ import Abstract from "./abstract";
 export default class Wallet extends Abstract {
     constructor() {
         super();
-        // this.endpoint = "http://localhost:8000/api/v1/wallet/user_wallet/";
+        // this.endpoint = "https://pq1232.herokuapp.com/api/v1/wallet/user_wallet/";
         this.endpoint = `${this.base}api/v1/wallet/user_wallet/`;
     }
 
@@ -41,7 +41,7 @@ export default class Wallet extends Abstract {
         const bodyData = { response: obj };
         // we will send the response we've got from razorpay to the backend to validate the payment
 
-        const endpoint = "http://localhost:8000/api/v1/wallet/payment/success/";
+        const endpoint = "https://pq1232.herokuapp.com/api/v1/wallet/payment/success/";
         const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(endpoint, {
             headers: {
@@ -56,7 +56,7 @@ export default class Wallet extends Abstract {
 
     async makePayment(obj, response) {
         // console.log(obj.ammount, obj)
-        const endpoint = "http://localhost:8000/api/v1/wallet/pay/";
+        const endpoint = "https://pq1232.herokuapp.com/api/v1/wallet/pay/";
         const accessToken = localStorage.getItem("pl_access_token") || {}; // this is getting repeated every where find a solution.
         const res = await fetch(endpoint, {
             headers: {

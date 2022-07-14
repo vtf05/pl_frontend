@@ -1,6 +1,6 @@
 export default class Abstract {
     constructor() {
-        this.base = "http://localhost:8000/";
+        this.base = "https://pq1232.herokuapp.com/";
 
     }
 
