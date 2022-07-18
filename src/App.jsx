@@ -43,7 +43,7 @@ class App extends Component {
       <div className="App">
         <Header />
         <Router>
-          <Routes basename="/pl_frontend">
+          <Routes >
             <Route exact path="/" element={start_page} />
             <Route exact path="/home" element={<HomeView />} />
             <Route exact path="/login" element={<LoginView />} />
